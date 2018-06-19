@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="2.0" xmlns:e="http://ant.apache.org/ivy/extra">
+    <info module="jgraphpad" organisation="com.github.rjolly" revision="1.0">
+        <description homepage="http://jgraph.sourceforge.net/"/>
+    </info>
+    <configurations>
+        <conf name="default" extends="runtime,master"/>
+        <conf name="master"/>
+        <conf name="compile"/>
+        <conf name="runtime"/>
+        <conf name="compile-test"/>
+        <conf name="runtime-test"/>
+    </configurations>
+    <dependencies>
+        <dependency org="org.apache.xmlgraphics" name="batik-dom" rev="1.7" conf="compile->master;runtime->default">
+            <exclude org="xalan" module="xalan" name="*" type="*" ext="*" conf="" matcher="exact"/>
+        </dependency>
+    </dependencies>
+</ivy-module>
