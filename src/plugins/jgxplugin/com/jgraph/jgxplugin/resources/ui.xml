@@ -1,0 +1,9 @@
+<ui>
+	<menubar>
+		<menu key="fileMenu">
+			<menu key="fileImportMenu">
+				<item key="importJGX"/>
+			</menu>
+		</menu>
+	</menubar>
+</ui>

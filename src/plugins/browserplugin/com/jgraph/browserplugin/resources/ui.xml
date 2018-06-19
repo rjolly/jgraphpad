@@ -1,0 +1,7 @@
+<ui>
+	<menubar>
+		<menu key="helpMenu">
+			<item key="homepage" before="about"/>
+		</menu>
+	</menubar>
+</ui>

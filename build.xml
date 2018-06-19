@@ -1,0 +1,235 @@
+<!--
+
+ @(#)build.xml	1.0 05-MAR-05
+
+ Copyright (c) 2005 Gaudenz Alder
+
+-->
+
+<!-- ===================== Project Properties =========================== -->
+
+<project name="jgraphpad" default="all" basedir=".">
+
+	<property name="app.name" value="JGraphpad Pro" />
+	<property name="app.jar" value="jgraphpad.jar" />
+	<property name="editor.jar" value="jgrapheditor.jar" />
+	<property name="microapp.jar" value="jgraphmicropad.jar" />
+	<property name="app.version" value="6.0.4.1" />
+	<property name="longversion"    value="6.0.4.1"/>
+
+	<!-- ===================== Project Environment =========================== -->
+
+	<property name="framework.home" value="${basedir}/src/framework" />
+	<property name="application.home" value="${basedir}/src/application" />
+    <property name="plugins.home" value="${basedir}/src/plugins" />
+	<property name="example.home" value="${basedir}/example" />
+	<property name="example.class" value="com.jgraph.JGraphpad" />
+
+	<!-- ===================== Project Dependencies =========================== -->
+
+	<!--  ==================== Compilation Options ==================== -->
+
+	<property name="compile.debug" value="false" />
+	<property name="compile.deprecation" value="false" />
+	<property name="compile.optimize" value="true" />
+
+	<!-- ===================== Build Environment =========================== -->
+
+	<property name="build.home" value="${basedir}/build" />
+	<property name="dist.home" value="${basedir}/dist" />
+	<property name="dist.name" value="${ant.project.name}-${app.version}" />
+	<property name="src.home" value="${basedir}/src" />
+	
+	<!--  ==================== All ==================== -->
+
+	<target name="all" depends="dist" description="Clean up and produce all distributions" />
+
+	<!--  ==================== Clean ==================== -->
+
+	<target name="clean" description="Delete all generated files and directories">
+		<delete dir="${build.home}/" />
+		<delete dir="${dist.home}/" />
+	</target>
+
+	<!--  ==================== Init ==================== -->
+
+	<target name="init" description="Initialize the build">
+		<tstamp />
+		<mkdir dir="${build.home}" />
+		<mkdir dir="${build.home}/classes" />
+		<mkdir dir="${build.home}/doc" />
+		<mkdir dir="${build.home}/doc/html" />
+		<mkdir dir="${build.home}/doc/pdf" />
+		<mkdir dir="${build.home}/doc/img" />
+		<mkdir dir="${build.home}/lib" />
+	</target>
+
+	<!--  ==================== Generate ==================== -->
+
+	<target name="generate" depends="init" description="Generate the build tree (aka source-staging)">
+		<!-- No source staging for distribution build process, 14OCT05/gaudenz -->
+	</target>
+
+	<!--  ==================== Compile ==================== -->
+
+	<target name="compile" depends="generate" description="Compile the build tree">
+
+		<!-- Compile sources -->
+		<javac debug="${compile.debug}" deprecation="${compile.deprecation}" optimize="${compile.optimize}" destdir="${build.home}/classes">
+			<classpath>
+				<pathelement path="${build.home}/classes" />
+				<fileset dir="${basedir}/jars/" includes="*.jar" />
+			</classpath>
+			<src path="${src.home}/framework"/>
+			<src path="${src.home}/application"/>
+			<src path="${src.home}/plugins/browserplugin"/>
+			<src path="${src.home}/plugins/bshplugin"/>
+			<src path="${src.home}/plugins/codecplugin"/>
+			<src path="${src.home}/plugins/epsplugin"/>
+			<src path="${src.home}/plugins/i18nplugin"/>
+			<src path="${src.home}/plugins/jgxplugin"/>
+			<src path="${src.home}/plugins/l2fplugin"/>
+			<src path="${src.home}/plugins/layoutplugin"/>
+			<src path="${src.home}/plugins/pdfplugin"/>
+			<src path="${src.home}/plugins/svgplugin"/>
+			<src path="${src.home}/plugins/twikiplugin"/>
+		</javac>
+
+		<!-- Copy resources -->
+		<copy todir="${build.home}/classes" includeEmptyDirs="false">
+			<fileset dir="${src.home}/application" excludes="**/*.java" />
+			<fileset dir="${src.home}/plugins/browserplugin" excludes="**/*.java" />
+			<fileset dir="${src.home}/plugins/bshplugin" excludes="**/*.java" />
+			<fileset dir="${src.home}/plugins/codecplugin" excludes="**/*.java" />
+			<fileset dir="${src.home}/plugins/epsplugin" excludes="**/*.java" />
+			<fileset dir="${src.home}/plugins/i18nplugin" excludes="**/*.java" />
+			<fileset dir="${src.home}/plugins/jgxplugin" excludes="**/*.java" />
+			<fileset dir="${src.home}/plugins/l2fplugin" excludes="**/*.java" />
+			<fileset dir="${src.home}/plugins/layoutplugin" excludes="**/*.java" />
+			<fileset dir="${src.home}/plugins/pdfplugin" excludes="**/*.java" />
+			<fileset dir="${src.home}/plugins/svgplugin" excludes="**/*.java" />
+			<fileset dir="${src.home}/plugins/twikiplugin" excludes="**/*.java" />
+		</copy>
+
+	</target>
+
+	<!--  ==================== Apidoc ==================== -->
+
+	<target name="apidoc" depends="init" description="Generate the API specification (Javadoc)">
+		<javadoc packagenames="com.jgraph.*" sourcepath="${src.home}/framework" 
+			classpath="${build.home}/classes" 
+			destdir="${build.home}/doc/api" use="true" author="false"
+		    version="false" windowtitle="${app.name} v${app.version} API Specification" 
+			doctitle="${app.name} v${app.version} API Specification">
+			<fileset dir="${src.home}/framework" includes="**/*.java" />
+			<fileset dir="${src.home}/application" includes="**/*.java" />
+			<header>
+				<![CDATA[<p>
+				<b>${app.name}</b>
+				<br>v${app.version}</p>]]></header>
+			<bottom>
+				<![CDATA[<font size=1>Copyright (C) 2005 <a href="http://www.jgraph.com/"
+				target="_blank">JGraph.com</a>. All rights reserved.</font>]]></bottom>
+	  	    <link href="http://java.sun.com/j2se/${java.specification.version}/docs/api" />
+		</javadoc>
+	</target>
+
+<!--  ==================== Doc ==================== -->
+
+	<target name="doc" depends="apidoc" description="Generate all documentation">	
+	</target>
+
+<!--  ==================== Jar ==================== -->
+
+<target name="jar" depends="compile" description="Build all Java archives (JARs)">
+	<unjar dest="${build.home}/classes">
+		<fileset dir="${basedir}/jars/" includes="jgraph.jar" />
+	</unjar>
+	<jar jarfile="${build.home}/lib/${editor.jar}" basedir="${build.home}/classes"
+		excludes="**/*plugin/**, **/pad/**">
+		<manifest>
+			<attribute name="Vendor" value="JGraph.com" />
+			<attribute name="Main-Class" value="com.jgraph.JGraphEditor" />
+		</manifest>
+	</jar>
+	<jar jarfile="${build.home}/lib/${microapp.jar}" basedir="${build.home}/classes"
+		excludes="**/*plugin/**">
+		<manifest>
+			<attribute name="Vendor" value="JGraph.com" />
+			<attribute name="Main-Class" value="${example.class}" />
+		</manifest>
+	</jar>
+	<unjar dest="${build.home}/classes">
+		<fileset dir="${basedir}/jars/" includes="*.jar" excludes="jgraphlayout*.jar" />
+	</unjar>
+	<jar jarfile="${build.home}/lib/${app.jar}-gpl" basedir="${build.home}/classes">
+		<manifest>
+			<attribute name="Vendor" value="JGraph.com" />
+			<attribute name="Main-Class" value="${example.class}" />
+		</manifest>
+	</jar>
+	<unjar dest="${build.home}/classes">
+		<fileset dir="${basedir}/jars/" includes="jgraphlayout*.jar" />
+	</unjar>
+	<jar jarfile="${build.home}/lib/${app.jar}" basedir="${build.home}/classes">
+		<manifest>
+			<attribute name="Vendor" value="JGraph.com" />
+			<attribute name="Main-Class" value="${example.class}" />
+		</manifest>
+	</jar>
+	<jar jarfile="${build.home}/lib/${ant.project.name}-demo.jar" basedir="${build.home}/classes">
+		<manifest>
+			<attribute name="Vendor" value="JGraph Ltd" />
+			<attribute name="Main-Class" value="com.jgraph.JGraphpadDemo" />
+		</manifest>
+	</jar>
+</target>
+
+<!--  ==================== Build ==================== -->
+
+<target name="build" depends="jar, doc" description="Run all tasks to completely populate the build directory" />
+
+<!--  ==================== Distclean ==================== -->
+
+<target name="distclean" description="Clean up the distribution files only">
+	<delete dir="${dist.home}/" />
+</target>
+
+<!--  ==================== Dist ==================== -->
+
+<target name="dist" depends="build" description="Produce fresh distributions">
+	<mkdir dir="${dist.home}" />
+
+	<!-- ==================== Evaluation Distribution ==================== -->
+	<mkdir dir="${dist.home}/${ant.project.name}" />
+
+	<copy file="${basedir}/ChangeLog" todir="${dist.home}/${ant.project.name}" />
+	<copy file="${basedir}/LICENSE" todir="${dist.home}/${ant.project.name}" />
+	<copy file="${build.home}/lib/${app.jar}" todir="${dist.home}/${ant.project.name}/lib" />
+	<copy file="${build.home}/lib/${microapp.jar}" todir="${dist.home}/${ant.project.name}/lib" />
+	<copy file="${build.home}/lib/${editor.jar}" todir="${dist.home}/${ant.project.name}/lib" />
+	
+	<copy todir="${dist.home}/${ant.project.name}/doc/api">
+		<fileset dir="${build.home}/doc/api" includes="**/*" />
+	</copy>
+
+	<!-- Add source tree -->
+	<copy todir="${dist.home}/${ant.project.name}/src">
+		<fileset dir="${src.home}" includes="**/*" />
+	</copy>
+
+	<!-- Add build file -->
+	<copy file="${basedir}/build.xml" todir="${dist.home}/${ant.project.name}" />
+	<copy todir="${dist.home}/${ant.project.name}/doc">
+		<fileset dir="${build.home}/doc" includes="**/*" />
+	</copy>
+
+	<copy todir="${dist.home}/${ant.project.name}/jars">
+		<fileset dir="${basedir}/jars" includes="*.jar" />
+	</copy>
+
+	<!--  Compress -->
+	<zip destfile="${dist.home}/${dist.name}.zip" basedir="${dist.home}/${ant.project.name}" />
+</target>
+</project>
+

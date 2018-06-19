@@ -1,0 +1,151 @@
+24-SEP-2007: JGraphpad Pro 6.0.4.1
+==================================
+
+- Uses parallel router directly from core JGraph library
+- Fixes open embedded libraries are added to all document
+- Fixes enabled state of new library action for embedded libraries
+- Fixes creating new embedded libraries if no document is open
+- Fixes closing of document if embedded library should be closed
+- Fixes possible class cast exception in JGraphpadFileAction.doNewLibrary
+- Removes redundant cropping code in JGraphpadVertexRenderer
+- Catches all errors in JGraphpadDialogs constructor
+- Removes obfuscation step from build process
+
+31-JUL-2007: JGraphpad Pro 6.0.4.0 
+==================================
+
+- Adds JGraphpad.INNER_LIBRARIES switch for libraries inside documents
+- Fixes removing of last character for save as of compressed files
+- Adds JGraphpadVertexRenderer.cropToShape hook for easier subclassing
+
+24-MAY-2007: JGraphpad Pro 6.0.3.3 
+==================================
+
+- Adds JGraphEditorNavigator.DEFAULT_BACKGROUND static variable
+- Updated to use JGraph 5.10.1.1
+
+10-AUG-2006: JGraphpad Pro 6.0.3.2
+==================================
+
+- Updated to use JGraph 5.9.2.0 and Layout Pro 1.3.0.9
+- Fixes wrong border widths for heavyweights in scaled graphs
+- Fixes removing of diagram properties in configureDiagramPane
+
+06-JUN-2006: JGraphpad Pro 6.0.3.1
+==================================
+
+- Updated to use JGraph 5.8.2.2 and JGraph Layout Pro 1.3.0.8
+
+21-MAR-2006: JGraphpad Pro 6.0.3.0
+==================================
+
+- Fixes labelAlongEdge-action default value
+- Adds rich-text support for edge labels
+
+13-FEB-2006: JGraphpad Pro 6.0.2.0
+==================================
+
+- Uses JGraph Layout Pro 1.3
+- Adds orthogonal edge router layout
+- Fixes preferred height for rich text to longer use previous width
+- Adds triangle shape and tool
+- Use JGraphEditorToolbox.SWITCH_BACK = true to enable the "switch back" behaviour
+- Adds default button and optional "switch back" behaviour to JGraphEditorToolbox
+
+31-JAN-2006: JGraphpad Pro 6.0.1.4
+==================================
+
+- Uses JGraph 5.7.4.6
+- Adds JGraphpadDemo class to disallow file operations
+- Removes stack trace from error handling in file actions
+- Improves error handling in recent files menu
+- Fixes class of prototype argument in JGraphpadEdgeTool constructor
+- Removes JFrame requirement to produce images in JGraphpadSVGServer plugin
+- Workaround for applet page reload problem and static initialization
+
+11-JAN-2006: JGraphpad Pro 6.0.1.3
+==================================
+
+- Uses JGraph 5.7.4.5
+- Uses l2fprod-common-0.2-dev-20051211, removes workaround
+
+08-DEC-2005: JGraphpad Pro 6.0.1.2
+==================================
+
+- Uses JGraph 5.7.4.4
+- Adds temporary workaround for bug in L2FProd's JOutlookBar
+
+04-NOV-2005: JGraphpad Pro 6.0.1.1
+==================================
+
+- Ships with JGraph 5.7.4 and JGraph Layout Pro 1.2.2
+- Fixes missing removal of listeners in JGraphpadFocusManager
+- Fixes infinite loop in JGraphEditorNavigator for embedded graphs
+- Sample-heavyweight renderer contains embedded JGraph component
+- Adds isReadOnly property to JGraphpadLibrary and -Pane
+- JGraphpadLibraryPane.LibraryTracker.getTitle returns library.toString
+- Changes visibility of JGraphpadWindowMenu.doMaximizeAll to public
+
+15-OCT-2005: JGraphpad Pro 6.0.1
+================================
+
+- Fixes heavyweight cell display in library pane
+- Makes isAlwaysActive true for all tools except for the selection tool
+- Restores graph cursor after inserting a new vertex with the vertex tool
+- Adds section numbers to all PDF documents
+- Layout panel uses focused graph as target (no longer keeps reference)
+- Changes default extension of compressed files to gz
+- Removes source staging step from build process
+
+19-SEP-2005: JGraphpad Pro 6.0.0.3
+==================================
+
+- Draws placeholder for scaled- and library-entry heavyweights
+- Vertex tool adds previewEnabled switch for transparent cells
+- Vertex tool resets marquee state in mouseReleased
+- Paste via context menu does no longer set insertion location
+- Uses standalone jgraphlayout.jar to fix classpath problems
+- Uses l2prod-common-all.jar version 0.2-dev-20050826
+- Uses Batik-related jar files from Batik 1.6
+- Uses epsgraphics.jar updated 3 Apr 2005
+- Adds text tool in toolbox + edit option in createVertexTool
+- Specifies return types for createVertexTool and createEdgeTool
+- Adds handling of borderless shapes in JGraphpad.createVertexTool
+- Changes execute signature in editor tool to use graph
+
+16-SEP-2005: JGraphpad Pro 6.0.0.2
+==================================
+
+- Avoids double buffering in heavyweight renderers and wrappers
+- Fixes inconsistency in included core library versions
+
+11-SEP-2005: JGraphpad Pro 6.0.0.1
+==================================
+
+- Displays heavyweight component entries in library panes
+- Clones heavyweight business object value on in-place edit
+- Business object clones heavyweight renderer when cloned
+- Adds clone method to Heavyweightrenderer to preserve state
+
+10-SEP-2005: JGraphpad Pro 6.0
+==============================
+
+- Changes version to continue old JGraphpad lifecycle
+- Uses the cached preview points in edge tool
+- Fixes inversion of default value in toggleBooleanAttribute
+- Routing action does no longer remove existing points
+- Does no longer center collapsing groups in child area
+- Adds -J argument for using JGoodies look-and-feel
+- Adds heavyweight renderer example and related fixes
+- Uses new JGraph Layout Pro API in layout plugin
+- Uses JGraphpad.APPTITLE for applet button label
+- JGraphpadImageIcon c'tor supports resource names
+- Displays version number / new logo in splash window
+- Adds JGraphpad.VERSION_NUMBER static field
+- Removes unused variables
+- Fixes minor javadoc typos
+
+07-AUG-2005: JGraphpad Pro 1.0
+==============================
+
+- Initial revision

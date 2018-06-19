@@ -1,0 +1,9 @@
+<ui>
+	<menubar>
+		<menu key="fileMenu">
+			<menu key="fileExportMenu">
+				<item key="saveEPS"/>
+			</menu>
+		</menu>
+	</menubar>
+</ui>

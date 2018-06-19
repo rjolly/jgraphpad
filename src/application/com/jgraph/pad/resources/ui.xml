@@ -1,0 +1,492 @@
+<ui>
+	<menubar>
+		<menu key="fileMenu">
+			<menu key="fileNewMenu">
+				<item key="newDocument"/>
+				<item key="newDiagram"/>
+				<separator/>
+				<item key="newLibrary"/>
+			</menu>
+			<separator/>
+			<item key="open"/>
+			<item key="createOpenRecentMenu"/>
+			<item key="download"/>
+			<separator/>
+			<item key="close"/>
+			<item key="closeAll"/>
+			<separator/>
+			<item key="save"/>
+			<item key="saveAs"/>
+			<item key="uploadAs"/>
+			<item key="saveAll"/>
+			<separator/>
+			<item key="removeDiagram"/>
+			<item key="renameDiagram"/>
+			<separator/>
+			<menu key="fileExportMenu">
+				<item key="saveImage"/>
+			</menu>
+			<menu key="fileImportMenu">
+				<item key="importCSV"/>
+			</menu>
+			<separator/>
+			<item key="print"/>
+			<item key="pageSetup"/>
+			<separator/>
+			<item key="exit"/>
+		</menu>
+		<menu key="editMenu">
+			<item key="edit"/>
+			<menu key="editSelectMenu">
+				<item key="selectAll"/>
+				<item key="clearSelection"/>
+				<separator/>
+				<item key="selectVertices"/>
+				<item key="selectEdges"/>
+				<separator/>
+				<item key="deselectVertices"/>
+				<item key="deselectEdges"/>
+				<separator/>				
+				<item key="invertSelection"/>
+			</menu>
+			<separator/>
+			<item key="undo"/>
+			<item key="redo"/>
+			<separator/>
+			<item key="cut"/>
+			<item key="copy"/>
+			<item key="paste"/>
+			<separator/>
+			<item key="delete"/>
+			<separator/>
+			<item key="find"/>
+			<item key="findAgain"/>
+		</menu>
+		<menu key="viewMenu">
+			<menu key="viewLibraryMenu">
+				<item key="libraryLarger"/>
+				<item key="librarySmaller"/>
+			</menu>
+			<separator/>
+			<menu key="viewBackgroundMenu">
+				<item key="togglePage"/>
+				<separator/>
+				<item key="backgroundImage"/>
+				<item key="backgroundImageURL"/>
+				<item key="background"/>
+				<separator/>
+				<item key="clearBackground"/>
+			</menu>
+			<menu key="viewZoomMenu">
+				<item key="zoomActual"/>
+				<item key="zoomCustom"/>
+				<separator/>
+				<item key="zoomIn"/>
+				<item key="zoomOut"/>
+				<separator/>
+				<group>
+					<item key="fitNone"/>
+					<item key="fitPage"/>
+					<item key="fitWindow"/>
+					<item key="fitWidth"/>
+				</group>
+			</menu>
+			<separator/>
+			<item key="toggleGrid"/>
+			<item key="gridSize"/>
+			<separator/>
+			<item key="togglePorts"/>
+			<item key="portSize"/>
+			<separator/>
+			<item key="toggleRulers"/>
+			<item key="toggleRootHandles"/>
+			<separator/>
+			<item key="toggleDoubleBuffered"/>
+			<item key="toggleAntiAlias"/>
+			<separator/>
+			<item key="toggleDragEnabled"/>
+			<separator/>
+			<menu key="viewOptionsMenu">
+				<item key="tolerance"/>
+				<item key="editClickCount"/>
+				<item key="marqueeColor"/>
+				<separator/>
+				<item key="gridColor"/>
+				<menu key="viewGridMenu">
+					<group>
+						<item key="switchDotGrid"/>
+						<item key="switchLineGrid"/>
+						<item key="switchCrossGrid"/>
+					</group>
+				</menu>
+				<separator/>
+				<item key="handleColor"/>
+				<item key="handleSize"/>
+				<item key="lockedHandleColor"/>
+				<separator/>
+				<item key="toggleEditable"/>
+				<item key="toggleMetric"/>
+				<separator/>
+				<item key="toggleDisconnectOnMove"/>
+				<item key="toggleMoveBelowZero"/>
+				<separator/>
+				<item key="toggleGraphCloneable"/>
+				<item key="toggleGraphMoveable"/>
+				<item key="toggleGraphSizeable"/>
+				<separator/>
+				<item key="toggleGraphBendable"/>
+				<item key="toggleGraphConnectable"/>
+				<item key="toggleGraphDisconnectable"/>
+				<separator/>
+				<item key="toggleSelectsLocalInsertedCells"/>
+				<item key="toggleSelectsAllInsertedCells"/>
+				<separator/>
+				<item key="toggleShowsExistingConnections"/>
+				<item key="toggleShowsInsertedConnections"/>
+				<item key="toggleShowsChangedConnections"/>
+				<separator/>
+				<item key="toggleHidesExistingConnections"/>
+				<item key="toggleHidesDanglingConnections"/>
+				<separator/>
+				<item key="toggleMovesIntoGroups"/>
+				<item key="toggleMovesOutOfGroups"/>
+				<separator/>
+				<item key="toggleRemembersCellViews"/>
+				<item key="togglePortsScaled"/>
+				<item key="toggleJumpsToDefaultPort"/>
+			</menu>
+		</menu>
+		<menu key="formatMenu">
+			<menu key="formatPositionMenu">
+				<item key="toggleCellMoveable"/>
+				<item key="toggleGroupReposition"/>
+				<separator/>
+				<group>
+					<item key="switchLockX"/>
+					<item key="switchLockY"/>
+				</group>
+			</menu>
+			<menu key="formatSizeMenu">
+				<item key="resize"/>
+				<item key="toggleAutoSize"/>
+				<separator/>
+				<item key="toggleCellSizeable"/>
+				<item key="toggleConstrained"/>				
+				<separator/>
+				<group>
+					<item key="switchLockWidth"/>
+					<item key="switchLockHeight"/>
+				</group>
+			</menu>
+			<separator/>
+			<menu key="formatShapeMenu">
+				<group>
+					<item key="switchShapeRectangle"/>
+					<item key="switchShapeRounded"/>
+					<item key="switchShapeCircle"/>
+					<item key="switchShapeDiamond"/>
+					<item key="switchShapeCylinder"/>
+				</group>
+			</menu>
+			<menu key="formatBackgroundMenu">
+				<item key="cellBackgroundColor"/>
+				<item key="cellGradientColor"/>
+				<separator/>
+				<item key="toggleCellOpaque"/>
+				<item key="toggleGroupOpaque"/>
+			</menu>
+			<separator/>
+			<menu key="formatImageMenu">
+				<item key="cellImage"/>
+				<item key="cellImageURL"/>
+				<separator/>
+				<item key="toggleStretchCellImage"/>
+				<separator/>
+				<item key="clearCellImage"/>
+			</menu>
+			<menu key="formatBorderMenu">
+				<item key="cellBorderColor"/>
+				<item key="cellBorderWidth"/>
+				<item key="cellInset"/>
+				<separator/>
+				<item key="clearCellBorder"/>
+			</menu>
+			<separator/>
+			<menu key="formatFontMenu">
+				<item key="font"/>
+				<item key="fontColor"/>
+				<item key="fontSize"/>
+				<separator/>
+				<item key="fontPlain"/>
+				<item key="fontBold"/>
+				<item key="fontItalic"/>
+				<item key="fontUnderline"/>
+			</menu>
+			<menu key="formatAlignMenu">
+				<group>	
+					<item key="switchAlignTop"/>
+					<item key="switchAlignMiddle"/>
+					<item key="switchAlignBottom"/>
+				</group>
+				<separator/>
+				<group>
+					<item key="switchAlignLeft"/>
+					<item key="switchAlignCenter"/>
+					<item key="switchAlignRight"/>
+				</group>
+			</menu>
+			<menu key="formatLabelMenu">
+				<group>
+					<item key="switchLabelTop"/>
+					<item key="switchLabelMiddle"/>
+					<item key="switchLabelBottom"/>
+				</group>
+				<separator/>
+				<group>
+					<item key="switchLabelLeft"/>
+					<item key="switchLabelCenter"/>
+					<item key="switchLabelRight"/>
+				</group>
+				<separator/>
+				<item key="toggleCellEditable"/>
+				<item key="toggleLabelAlongEdge"/>
+			</menu>
+			<separator/>
+			<menu key="formatEdgeMenu">
+				<item key="lineWidth"/>
+				<item key="lineColor"/>
+				<separator/>
+				<item key="dashPattern"/>
+				<item key="dashOffset"/>
+				<separator/>
+				<item key="toggleEdgeBendable"/>
+			</menu>
+			<menu key="formatStyleMenu">
+				<group>
+					<item key="switchStyleOrthogonal"/>
+					<item key="switchStyleSpline"/>
+					<item key="switchStyleBezier"/>
+				</group>
+				<separator/>
+				<item key="beginSize"/>
+				<item key="clearBegin"/>
+				<separator/>
+				<item key="endSize"/>
+				<item key="clearEnd"/>
+			</menu>
+			<menu key="formatRoutingMenu">
+				<group>
+					<item key="switchRoutingNone"/>
+					<item key="switchRoutingSimple"/>
+					<item key="switchRoutingParallel"/>
+					<item key="switchRoutingParallelSpline"/>
+				</group>
+			</menu>
+			<separator/>
+			<item key="toggleConnectable"/>
+			<item key="toggleDisconnectable"/>
+		</menu>
+		<menu key="cellMenu">
+			<menu key="cellCloneMenu">
+				<item key="cloneValue"/>
+				<item key="cloneSize"/>
+				<item key="cloneAttributes"/>
+			</menu>
+			<menu key="cellsAlignMenu">
+				<item key="cellsAlignTop"/>
+				<item key="cellsAlignMiddle"/>
+				<item key="cellsAlignBottom"/>
+				<separator/>
+				<item key="cellsAlignLeft"/>
+				<item key="cellsAlignCenter"/>
+				<item key="cellsAlignRight"/>
+			</menu>
+			<menu key="cellSelectableMenu">
+				<item key="toggleSelectable"/>
+				<item key="toggleChildrenSelectable"/>
+				<separator/>
+				<item key="allSelectable"/>
+			</menu>
+			<separator/>
+			<item key="collapse"/>
+			<item key="toggleCollapsed"/>
+			<separator/>
+			<item key="expand"/>
+			<item key="expandAll"/>
+			<separator/>
+			<item key="toBack"/>
+			<item key="toFront"/>
+			<separator/>
+			<item key="group"/>
+			<item key="groupAsEdge"/>
+			<item key="ungroup"/>
+			<item key="removeFromGroup"/>
+			<separator/>
+			<item key="connect"/>
+			<item key="disconnect"/>
+			<separator/>
+			<item key="addProperty"/>
+			<item key="removeProperty"/>
+			<separator/>
+			<item key="invert"/>
+		</menu>
+		<item key="createWindowMenu"/>
+		<menu key="helpMenu">
+			<item key="about"/>
+		</menu>
+	</menubar>
+	<toolbar>
+		<item key="newDocument"/>
+		<item key="newDiagram"/>
+		<item key="newLibrary"/>
+		<separator/>
+		<item key="save"/>
+		<item key="print"/>
+		<separator/>
+		<item key="undo"/>
+		<item key="redo"/>
+		<separator/>
+		<item key="cut"/>
+		<item key="copy"/>
+		<item key="paste"/>
+		<separator/>
+		<item key="zoomActual"/>
+		<item key="zoomIn"/>
+		<item key="zoomOut"/>
+		<separator/>
+		<item key="toFront"/>
+		<item key="toBack"/>
+		<separator/>
+		<item key="group"/>
+		<item key="ungroup"/>
+		<separator/>
+		<item key="font"/>
+		<separator/>
+		<item key="fontPlain"/>
+		<item key="fontBold"/>
+		<item key="fontItalic"/>
+		<item key="fontUnderline"/>
+		<separator/>
+		<item key="switchAlignLeft"/>
+		<item key="switchAlignCenter"/>
+		<item key="switchAlignRight"/>
+		<separator/>
+		<item key="layout"/>
+	</toolbar>
+	<toolbox>
+		<item key="selectTool"/>
+		<separator/>
+		<item key="textTool"/>
+		<separator/>
+		<item key="vertexTool"/>
+		<item key="roundedTool"/>
+		<item key="circleTool"/>
+		<item key="diamondTool"/>
+		<item key="triangleTool"/>
+		<item key="cylinderTool"/>
+		<separator/>
+		<item key="imageTool"/>
+		<item key="heavyTool"/>
+		<separator/>
+		<item key="edgeTool"/>
+		<itme key="orthogonalEdgeTool"/>
+		<separator/>
+		<item key="createVertexShapeCombo"/>
+		<item key="createBackgroundCombo"/>
+		<item key="createGradientCombo"/>
+		<item key="createBorderCombo"/>
+		<separator/>
+		<item key="createLineDecorationCombo"/>
+		<item key="createLineColorCombo"/>
+		<item key="createLineWidthCombo"/>
+		<item key="createDashPatternCombo"/>
+	</toolbox>
+	<desktoppopupmenu>
+		<item key="newDocument"/>
+		<item key="newLibrary"/>
+		<separator/>
+		<item key="open"/>
+	</desktoppopupmenu>
+	<internalframepopupmenu>
+		<item key="newDiagram"/>
+		<item key="renameDiagram"/>
+		<separator/>
+		<item key="removeDiagram"/>
+		<item key="close"/>
+	</internalframepopupmenu>
+	<graphpopupmenu>
+		<item key="paste"/>
+		<separator/>
+		<item key="selectVertices"/>
+		<item key="selectEdges"/>
+		<separator/>
+		<item key="undo"/>
+		<item key="redo"/>
+		<separator/>
+		<item key="zoomActual"/>
+		<item key="zoomIn"/>
+		<item key="zoomOut"/>
+		<separator/>
+		<item key="toggleGrid"/>
+		<item key="toggleAntiAlias"/>
+		<item key="togglePorts"/>
+		<item key="toggleRootHandles"/>
+		<separator/>
+		<item key="save"/>
+		<item key="print"/>
+	</graphpopupmenu>
+	<cellpopupmenu>
+		<item key="edit"/>
+		<item key="addProperty"/>
+		<separator/>
+		<item key="undo"/>
+		<item key="redo"/>
+		<separator/>
+		<item key="cut"/>
+		<item key="copy"/>
+		<item key="paste"/>
+		<separator/>
+		<item key="toFront"/>
+		<item key="toBack"/>
+		<separator/>
+		<item key="collapse"/>
+		<item key="expand"/>
+		<item key="expandAll"/>
+		<separator/>
+		<item key="group"/>
+		<item key="ungroup"/>
+		<separator/>
+		<item key="switchAlignTop"/>
+		<item key="switchAlignMiddle"/>
+		<item key="switchAlignBottom"/>
+	</cellpopupmenu>
+	<librarypopupmenu>
+		<item key="paste"/>
+		<separator/>
+		<item key="libraryLarger"/>
+		<item key="librarySmaller"/>
+		<separator/>
+		<item key="save"/>
+		<item key="saveAs"/>
+		<separator/>
+		<item key="open"/>
+		<item key="newLibrary"/>
+		<separator/>
+		<item key="close"/>
+	</librarypopupmenu>
+	<entrypopupmenu>
+		<item key="cut"/>
+		<item key="copy"/>
+		<item key="paste"/>
+		<separator/>
+		<item key="delete"/>
+		<separator/>
+		<item key="toFront"/>
+		<item key="toBack"/>
+		<separator/>
+		<item key="libraryLarger"/>
+		<item key="librarySmaller"/>
+		<separator/>
+		<item key="save"/>
+	</entrypopupmenu>
+</ui>

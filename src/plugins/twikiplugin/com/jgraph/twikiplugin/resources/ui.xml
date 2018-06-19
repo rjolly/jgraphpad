@@ -1,0 +1,9 @@
+<ui>
+	<menubar>
+		<menu key="fileMenu">
+			<item key="uploadToTWiki" before="exit"/>
+			<item key="uploadAndExit" before="exit"/>
+			<separator before="exit"/>
+		</menu>
+	</menubar>
+</ui>
