@@ -426,7 +426,6 @@ public class JGraphpad {
 	 * implementation calls System.exit with the specified code.
 	 */
 	protected void exit(int code) {
-		System.exit(code);
 	}
 
 	/**
@@ -1645,9 +1644,6 @@ public class JGraphpad {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-
-			// Terminates abnormally
-			System.exit(1);
 		}
 	}
 
