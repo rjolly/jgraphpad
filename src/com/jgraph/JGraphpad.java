@@ -135,7 +135,7 @@ public class JGraphpad {
 	/**
 	 * Global static product identifier.
 	 */
-	public static final String VERSION_NUMBER = "6.0.4.1";
+	public static final String VERSION_NUMBER = "6.0.7.4";
 
 	/**
 	 * Holds the application title for dialogs.

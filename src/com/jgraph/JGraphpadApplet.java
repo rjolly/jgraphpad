@@ -1,5 +1,5 @@
 /* 
- * $Id: JGraphpadApplet.java,v 1.8 2007/08/29 14:15:36 david Exp $
+ * $Id: JGraphpadApplet.java,v 1.9 2007/10/18 09:21:42 david Exp $
  * Copyright (c) 2001-2005, Gaudenz Alder
  * 
  * All rights reserved.
@@ -19,6 +19,15 @@ import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JTextPane;
 import javax.swing.text.rtf.RTFEditorKit;
+
+import org.jgraph.graph.AbstractCellView;
+import org.jgraph.graph.DefaultGraphCellEditor;
+import org.jgraph.graph.EdgeRenderer;
+import org.jgraph.graph.EdgeView;
+import org.jgraph.graph.PortRenderer;
+import org.jgraph.graph.PortView;
+import org.jgraph.graph.VertexRenderer;
+import org.jgraph.graph.VertexView;
 
 import com.jgraph.pad.dialog.JGraphpadDialogs;
 import com.jgraph.pad.graph.JGraphpadEdgeRenderer;
@@ -87,6 +96,14 @@ public class JGraphpadApplet extends Applet {
 		arguments = processArguments();
 	}
 
+	public void destroy() {
+		super.destroy();
+		PortView.renderer = new PortRenderer();
+		EdgeView.renderer = new EdgeRenderer();
+		AbstractCellView.cellEditor = new DefaultGraphCellEditor();
+		VertexView.renderer = new VertexRenderer();
+	}
+	
 	/**
 	 * Hook for subclassers to add more arguments from the applet page. It is
 	 * allowed to return null, eg:

@@ -1,5 +1,5 @@
 /* 
- * $Id: JGraphEditorRuler.java,v 1.1.1.1 2005/08/04 11:21:58 gaudenz Exp $
+ * $Id: JGraphEditorRuler.java,v 1.2 2008/04/25 14:43:40 gaudenz Exp $
  * Copyright (c) 2001-2005, Gaudenz Alder
  * 
  * All rights reserved.
@@ -15,12 +15,18 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Point2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.NumberFormat;
+import java.util.TooManyListenersException;
 
 import javax.swing.JComponent;
 
@@ -30,7 +36,8 @@ import org.jgraph.JGraph;
  * Component that displays a ruler for a JGraph component.
  */
 public class JGraphEditorRuler extends JComponent implements
-		MouseMotionListener, PropertyChangeListener {
+		MouseMotionListener, DropTargetListener, PropertyChangeListener
+{
 
 	/**
 	 * Defines the constants for horizontal and vertical orientation.
@@ -53,7 +60,8 @@ public class JGraphEditorRuler extends JComponent implements
 	/**
 	 * Configuers the number format.
 	 */
-	static {
+	static
+	{
 		numberFormat.setMaximumFractionDigits(2);
 	}
 
@@ -120,6 +128,20 @@ public class JGraphEditorRuler extends JComponent implements
 		updateIncrementAndUnits();
 		graph.addMouseMotionListener(this);
 		graph.addPropertyChangeListener(this);
+		
+		DropTarget dropTarget = graph.getDropTarget();
+
+		try
+		{
+			if (dropTarget != null)
+			{
+				dropTarget.addDropTargetListener(this);
+			}
+		}
+		catch (TooManyListenersException tmle)
+		{
+			// should not happen... swing drop target is multicast
+		}
 	}
 
 	/**
@@ -128,7 +150,8 @@ public class JGraphEditorRuler extends JComponent implements
 	 * @param offset
 	 *            The start of the active region.
 	 */
-	public void setActiveOffset(int offset) {
+	public void setActiveOffset(int offset)
+	{
 		activeoffset = (int) (offset * scale);
 	}
 
@@ -138,7 +161,8 @@ public class JGraphEditorRuler extends JComponent implements
 	 * @param length
 	 *            The length of the active region.
 	 */
-	public void setActiveLength(int length) {
+	public void setActiveLength(int length)
+	{
 		activelength = (int) (length * scale);
 	}
 
@@ -147,7 +171,8 @@ public class JGraphEditorRuler extends JComponent implements
 	 * 
 	 * @return Returns if the ruler is metric.
 	 */
-	public boolean isMetric() {
+	public boolean isMetric()
+	{
 		return isMetric;
 	}
 
@@ -157,7 +182,8 @@ public class JGraphEditorRuler extends JComponent implements
 	 * @param isMetric
 	 *            Whether to use metric units.
 	 */
-	public void setMetric(boolean isMetric) {
+	public void setMetric(boolean isMetric)
+	{
 		this.isMetric = isMetric;
 		updateIncrementAndUnits();
 		repaint();
@@ -168,7 +194,8 @@ public class JGraphEditorRuler extends JComponent implements
 	 * 
 	 * @return Returns the rulerSize.
 	 */
-	public int getRulerSize() {
+	public int getRulerSize()
+	{
 		return rulerSize;
 	}
 
@@ -178,7 +205,8 @@ public class JGraphEditorRuler extends JComponent implements
 	 * @param rulerSize
 	 *            The rulerSize to set.
 	 */
-	public void setRulerSize(int rulerSize) {
+	public void setRulerSize(int rulerSize)
+	{
 		this.rulerSize = rulerSize;
 	}
 
@@ -188,7 +216,8 @@ public class JGraphEditorRuler extends JComponent implements
 	 * 
 	 * @return Returns the preferred size for the ruler.
 	 */
-	public Dimension getPreferredSize() {
+	public Dimension getPreferredSize()
+	{
 		Dimension dim = graph.getPreferredSize();
 		if (orientation == ORIENTATION_VERTICAL)
 			dim.width = rulerSize;
@@ -199,15 +228,95 @@ public class JGraphEditorRuler extends JComponent implements
 
 	/*
 	 * (non-Javadoc)
+	 * @see java.awt.dnd.DropTargetListener#dragEnter(java.awt.dnd.DropTargetDragEvent)
 	 */
-	public void mouseMoved(MouseEvent e) {
-		if (drag != null) {
+	public void dragEnter(DropTargetDragEvent arg0)
+	{
+		// empty
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see java.awt.dnd.DropTargetListener#dragExit(java.awt.dnd.DropTargetEvent)
+	 */
+	public void dragExit(DropTargetEvent arg0)
+	{
+		// empty
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see java.awt.dnd.DropTargetListener#dragOver(java.awt.dnd.DropTargetDragEvent)
+	 */
+	public void dragOver(final DropTargetDragEvent arg0)
+	{
+		updateMousePosition(arg0.getLocation());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see java.awt.dnd.DropTargetListener#drop(java.awt.dnd.DropTargetDropEvent)
+	 */
+	public void drop(DropTargetDropEvent arg0)
+	{
+		// empty
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see java.awt.dnd.DropTargetListener#dropActionChanged(java.awt.dnd.DropTargetDragEvent)
+	 */
+	public void dropActionChanged(DropTargetDragEvent arg0)
+	{
+		// empty
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	public void mouseMoved(MouseEvent e)
+	{
+		updateMousePosition(e.getPoint());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	public void mouseDragged(MouseEvent e)
+	{
+		updateDragPosition(e.getPoint());
+	}
+
+	/**
+	 * Repaints the mouse position.
+	 */
+	protected void updateDragPosition(Point pt)
+	{
+		Point old = drag;
+		drag = pt;
+
+		if (old != null)
+		{
+			repaint(old.x, old.y);
+		}
+
+		repaint(drag.x, drag.y);
+	}
+
+	/**
+	 * Repaints the mouse position.
+	 */
+	protected void updateMousePosition(Point pt)
+	{
+		if (drag != null)
+		{
 			Point old = drag;
 			drag = null;
 			repaint(old.x, old.y);
 		}
+
 		Point old = mouse;
-		mouse = e.getPoint();
+		mouse = pt;
 		repaint(old.x, old.y);
 		repaint(mouse.x, mouse.y);
 	}
@@ -215,18 +324,8 @@ public class JGraphEditorRuler extends JComponent implements
 	/*
 	 * (non-Javadoc)
 	 */
-	public void mouseDragged(MouseEvent e) {
-		Point old = drag;
-		drag = e.getPoint();
-		if (old != null)
-			repaint(old.x, old.y);
-		repaint(drag.x, drag.y);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	public void propertyChange(PropertyChangeEvent event) {
+	public void propertyChange(PropertyChangeEvent event)
+	{
 		String changeName = event.getPropertyName();
 		if (changeName.equals(JGraph.SCALE_PROPERTY))
 			repaint();
@@ -236,12 +335,16 @@ public class JGraphEditorRuler extends JComponent implements
 	 * Updates the local variables used for painting based on the current scale
 	 * and unit system.
 	 */
-	protected void updateIncrementAndUnits() {
-		if (isMetric) {
+	protected void updateIncrementAndUnits()
+	{
+		if (isMetric)
+		{
 			units = INCH / 2.54; // 2.54 dots per centimeter
 			units *= graph.getScale() * scale;
 			increment = units;
-		} else {
+		}
+		else
+		{
 			units = INCH;
 			units *= graph.getScale() * scale;
 			increment = units / 2;
@@ -257,7 +360,8 @@ public class JGraphEditorRuler extends JComponent implements
 	 * @param y
 	 *            The endpoint for repainting a vertical ruler.
 	 */
-	public void repaint(int x, int y) {
+	public void repaint(int x, int y)
+	{
 		if (orientation == ORIENTATION_VERTICAL)
 			repaint(0, y, rulerSize, 1);
 		else
@@ -270,8 +374,8 @@ public class JGraphEditorRuler extends JComponent implements
 	 * @param g
 	 *            The graphics to paint the ruler to.
 	 */
-	public void paintComponent(Graphics g) {
-		revalidate();
+	public void paintComponent(Graphics g)
+	{
 		updateIncrementAndUnits();
 		Rectangle drawHere = g.getClipBounds();
 
@@ -305,11 +409,14 @@ public class JGraphEditorRuler extends JComponent implements
 
 		// Uses clipping bounds to calculate first tick and last tick
 		// location.
-		if (orientation == ORIENTATION_VERTICAL) {
+		if (orientation == ORIENTATION_VERTICAL)
+		{
 			start = Math.floor(drawHere.y / increment) * increment;
 			end = Math.ceil((drawHere.y + drawHere.height) / increment)
 					* increment;
-		} else {
+		}
+		else
+		{
 			start = Math.floor(drawHere.x / increment) * increment;
 			end = Math.ceil((drawHere.x + drawHere.width) / increment)
 					* increment;
@@ -317,13 +424,17 @@ public class JGraphEditorRuler extends JComponent implements
 
 		// Makes a special case of 0 to display the number
 		// within the rule and draw a units label.
-		if (start == 0) {
+		if (start == 0)
+		{
 			text = Integer.toString(0) + (isMetric ? " cm" : " in");
 			tickLength = 10;
-			if (orientation == ORIENTATION_VERTICAL) {
+			if (orientation == ORIENTATION_VERTICAL)
+			{
 				g.drawLine(rulerSize - 1, 0, rulerSize - tickLength - 1, 0);
 				g.drawString(text, 1, 11);
-			} else {
+			}
+			else
+			{
 				g.drawLine(0, rulerSize - 1, 0, rulerSize - tickLength - 1);
 				g.drawString(text, 2, 11);
 			}
@@ -332,19 +443,24 @@ public class JGraphEditorRuler extends JComponent implements
 		}
 
 		// Ticks and labels
-		for (double i = start; i < end; i += increment) {
+		for (double i = start; i < end; i += increment)
+		{
 			if (units == 0)
 				units = 1;
 			tickLength = 10;
 			// VW make relative to scaling factor
 			text = numberFormat.format(i / units);
-			if (tickLength != 0) {
-				if (orientation == ORIENTATION_VERTICAL) {
+			if (tickLength != 0)
+			{
+				if (orientation == ORIENTATION_VERTICAL)
+				{
 					g.drawLine(rulerSize - 1, (int) i, rulerSize - tickLength
 							- 1, (int) i);
 					if (text != null)
 						g.drawString(text, 0, (int) i + 9);
-				} else {
+				}
+				else
+				{
 					g.drawLine((int) i, rulerSize - 1, (int) i, rulerSize
 							- tickLength - 1);
 					if (text != null)

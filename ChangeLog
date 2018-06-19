@@ -1,3 +1,50 @@
+31-MAR-2010: JGraphpad 6.0.7.4
+==============================
+
+- Adds defensive checks to catch user NPE
+
+26-MAY-2009: JGraphpad 6.0.7.3
+==============================
+
+- License changed to LGPL
+
+06-APR-2009: JGraphpad 6.0.7.2
+==============================
+
+- Adds defensive checks to catch user NPE
+
+26-FEB-2009: JGraphpad 6.0.7.1
+==============================
+
+- Fixes XML persistence for partial graph layout caches
+
+12-FEB-2009: JGraphpad 6.0.7.0
+==============================
+
+- Fixes highlight and preview in JGraphpadEdgeTool
+
+22-JAN-2009: JGraphpad 6.0.6.1
+==============================
+
+- Adds JGraphpadFocusManager.KEEP_FOCUSED_GRAPH switch
+
+18-NOV-2008: JGraphpad 6.0.6.0
+==============================
+
+- Adds createInternalFrame hook method in JGraphpadPane
+- Uses acceptsSource, -target in JGraphpadEdgeTool.execute
+- Uses acceptsTarget in JGraphadEdgeTool.processMouseDraggedEvent
+
+22-MAY-2008: JGraphpad 6.0.5.0
+==============================
+
+- Changes DocumentTracker class scope to public
+- Fixes diagram deleting focusing issue :-
+	 http://www.jgraph.com/tracker/bug.php?op=show&bugid=59
+- Updates indicators in both ruler during drag-and-drop
+- Removes revalidate call in JGraphEditorRuler.paintComponent
+- Adds JGraphEditorRuler.updateMousePosition, updateDragPosition
+
 24-SEP-2007: JGraphpad Pro 6.0.4.1
 ==================================
 

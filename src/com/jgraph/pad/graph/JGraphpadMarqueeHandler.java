@@ -1,5 +1,5 @@
 /* 
- * $Id: JGraphpadMarqueeHandler.java,v 1.4 2005/09/18 08:39:51 gaudenz Exp $
+ * $Id: JGraphpadMarqueeHandler.java,v 1.5 2009/04/06 12:24:34 david Exp $
  * Copyright (c) 2001-2005, Gaudenz Alder
  * 
  * All rights reserved.
@@ -205,20 +205,22 @@ public class JGraphpadMarqueeHandler extends BasicMarqueeHandler {
 	protected CellView getGroupByFoldingHandle(JGraph graph, Point2D pt) {
 		CellView[] views = graph.getGraphLayoutCache().getCellViews();
 		for (int i = 0; i < views.length; i++) {
-			if (views[i].getBounds().contains(pt.getX(), pt.getY())) {
-				Rectangle2D rectBounds = views[i].getBounds();
-				Point2D containerPoint = (Point2D) pt.clone();
-				containerPoint.setLocation(containerPoint.getX()
-						- rectBounds.getX(), containerPoint.getY()
-						- rectBounds.getY());
-				Component renderer = views[i].getRendererComponent(graph,
-						false, false, false);
-				if (renderer instanceof JGraphpadVertexRenderer
-						&& DefaultGraphModel.isGroup(graph.getModel(), views[i]
-								.getCell())) {
-					JGraphpadVertexRenderer group = (JGraphpadVertexRenderer) renderer;
-					if (group.inHitRegion(containerPoint)) {
-						return views[i];
+			Rectangle2D rectBounds = views[i].getBounds();
+			if (rectBounds != null && pt != null) {
+				if (rectBounds.contains(pt.getX(), pt.getY())) {
+					Point2D containerPoint = (Point2D) pt.clone();
+					containerPoint.setLocation(containerPoint.getX()
+							- rectBounds.getX(), containerPoint.getY()
+							- rectBounds.getY());
+					Component renderer = views[i].getRendererComponent(graph,
+							false, false, false);
+					if (renderer instanceof JGraphpadVertexRenderer
+							&& DefaultGraphModel.isGroup(graph.getModel(), views[i]
+							                                                     .getCell())) {
+						JGraphpadVertexRenderer group = (JGraphpadVertexRenderer) renderer;
+						if (group.inHitRegion(containerPoint)) {
+							return views[i];
+						}
 					}
 				}
 			}

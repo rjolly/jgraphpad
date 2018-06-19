@@ -1,5 +1,5 @@
 /* 
- * $Id: JGraphEditorAction.java,v 1.5 2007/08/29 09:30:49 gaudenz Exp $
+ * $Id: JGraphEditorAction.java,v 1.6 2009/01/20 15:42:13 gaudenz Exp $
  * Copyright (c) 2001-2005, Gaudenz Alder
  * 
  * All rights reserved.
@@ -25,6 +25,7 @@ import org.jgraph.JGraph;
 import com.jgraph.editor.factory.JGraphEditorDiagramPane;
 import com.jgraph.editor.factory.JGraphEditorNavigator;
 import com.jgraph.pad.factory.JGraphpadPane;
+import com.jgraph.pad.util.JGraphpadFocusManager;
 
 /**
  * The base class for all actions in a JGraph editor kit. An action may be
@@ -233,8 +234,17 @@ public abstract class JGraphEditorAction extends AbstractAction
 	 */
 	public static JGraph getPermanentFocusOwnerGraph()
 	{
-		return getParentGraph(KeyboardFocusManager
-				.getCurrentKeyboardFocusManager().getPermanentFocusOwner());
+		if (JGraphpadFocusManager.KEEP_FOCUSED_GRAPH)
+		{
+			JGraphpadFocusManager manager = JGraphpadFocusManager
+					.getCurrentGraphFocusManager();
+			return manager.getFocusedGraph();
+		}
+		else
+		{
+			return getParentGraph(KeyboardFocusManager
+					.getCurrentKeyboardFocusManager().getPermanentFocusOwner());
+		}
 	}
 
 	/**
@@ -255,8 +265,16 @@ public abstract class JGraphEditorAction extends AbstractAction
 	 */
 	public static JGraphEditorDiagramPane getPermanentFocusOwnerDiagramPane()
 	{
-		return JGraphEditorDiagramPane
-				.getParentDiagramPane(getPermanentFocusOwner());
+		if (JGraphpadFocusManager.KEEP_FOCUSED_GRAPH)
+		{
+			return JGraphEditorDiagramPane
+					.getParentDiagramPane(getPermanentFocusOwnerGraph());
+		}
+		else
+		{
+			return JGraphEditorDiagramPane
+					.getParentDiagramPane(getPermanentFocusOwner());
+		}
 	}
 
 	/**
@@ -272,11 +290,11 @@ public abstract class JGraphEditorAction extends AbstractAction
 		for (int i = 0; i < frames.length; i++)
 			if (frames[i].isActive())
 				return frames[i];
-		
+
 		for (int i = 0; i < frames.length; i++)
 			if (frames[i].isVisible())
 				return frames[i];
-		
+
 		return null;
 	}
 
@@ -310,7 +328,7 @@ public abstract class JGraphEditorAction extends AbstractAction
 			try
 			{
 				Component comp = frame.getContentPane().getComponent(i);
-				
+
 				if (comp instanceof JGraphpadPane)
 				{
 					return (JGraphpadPane) comp;

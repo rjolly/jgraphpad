@@ -1,0 +1,13 @@
+<ui>
+	<menubar>
+		<menu key="editMenu">
+			<menu key="editSelectMenu">
+				<separator/>
+				<item key="selectPath"/>
+				<item key="selectTree"/>
+			</menu>
+			<separator/>
+			<item key="layout"/>
+		</menu>
+	</menubar>
+</ui>

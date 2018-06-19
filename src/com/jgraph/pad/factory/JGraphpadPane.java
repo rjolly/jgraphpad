@@ -1,5 +1,5 @@
 /* 
- * $Id: JGraphpadPane.java,v 1.8 2007/07/28 09:41:33 gaudenz Exp $
+ * $Id: JGraphpadPane.java,v 1.11 2008/11/18 15:24:50 david Exp $
  * Copyright (c) 2001-2005, Gaudenz Alder
  * 
  * All rights reserved.
@@ -194,17 +194,12 @@ public class JGraphpadPane extends JPanel {
 		// Creates the internal frame for the file if the frame does not yet
 		// exist. Else this method does nothing.
 		if (internalFrame == null) {
-			internalFrame = new JInternalFrame(getFileTitle(file), true, true,
-					true, true);
+			internalFrame = createInternalFrame(getFileTitle(file));
 
 			// Associates the internal frame with the file and
 			// adds it to the desktop pane.
 			internalFrames.put(file, internalFrame);
 			desktopPane.add(internalFrame);
-			internalFrame.setBounds(0, 0, 600, 280);
-			internalFrame.setVisible(true);
-			internalFrame.setFocusable(false);
-			internalFrame.getContentPane().setLayout(new BorderLayout());
 			
 			// Adds a tabbed pane to hold the diagrams in the file
 			final JTabbedPane tabbedPane = editor.getFactory()
@@ -309,6 +304,22 @@ public class JGraphpadPane extends JPanel {
 		}
 	}
 
+	/**
+	 * Hook method to create an internal frame
+	 * @param title the title of the frame
+	 * @return the internal frame created
+	 */
+	public JInternalFrame createInternalFrame(String title) {
+		JInternalFrame internalFrame = new JInternalFrame(title, true, true,
+				true, true);
+
+		internalFrame.setBounds(0, 0, 600, 280);
+		internalFrame.setVisible(true);
+		internalFrame.setFocusable(false);
+		internalFrame.getContentPane().setLayout(new BorderLayout());
+		return internalFrame;
+	}
+	
 	public JInternalFrame getInternalFrame(Object file) {
 		return (JInternalFrame) internalFrames.get(file);
 	}
@@ -570,6 +581,17 @@ public class JGraphpadPane extends JPanel {
 					}
 				}
 			}
+			// Transfers the focus to the graph in the selected diagram
+			// pane after the component hierarchy has been revalidated.
+			Component tab = tabbedPane.getSelectedComponent();
+			if (tab instanceof JGraphEditorDiagramPane) {
+				final JGraphEditorDiagramPane pane = (JGraphEditorDiagramPane) tab;
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						pane.getGraph().requestFocusInWindow();
+					}
+				});
+			}
 		}
 	}
 
@@ -624,7 +646,7 @@ public class JGraphpadPane extends JPanel {
 	 * Utility class to establish a listener in a editor's document model and
 	 * update an editor pane.
 	 */
-	protected static class DocumentTracker extends JGraphpadTreeModelAdapter {
+	public static class DocumentTracker extends JGraphpadTreeModelAdapter {
 
 		/**
 		 * References the editor pane to be updated.

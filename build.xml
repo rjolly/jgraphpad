@@ -14,8 +14,8 @@
 	<property name="app.jar" value="jgraphpad.jar" />
 	<property name="editor.jar" value="jgrapheditor.jar" />
 	<property name="microapp.jar" value="jgraphmicropad.jar" />
-	<property name="app.version" value="6.0.4.1" />
-	<property name="longversion"    value="6.0.4.1"/>
+	<property name="app.version" value="6.0.7.4" />
+	<property name="longversion"    value="6.0.7.4"/>
 
 	<!-- ===================== Project Environment =========================== -->
 
@@ -160,17 +160,14 @@
 		</manifest>
 	</jar>
 	<unjar dest="${build.home}/classes">
-		<fileset dir="${basedir}/jars/" includes="*.jar" excludes="jgraphlayout*.jar" />
+		<fileset dir="${basedir}/jars/" includes="*.jar" />
 	</unjar>
-	<jar jarfile="${build.home}/lib/${app.jar}-gpl" basedir="${build.home}/classes">
+	<jar jarfile="${build.home}/lib/${app.jar}-lgpl" basedir="${build.home}/classes">
 		<manifest>
 			<attribute name="Vendor" value="JGraph.com" />
 			<attribute name="Main-Class" value="${example.class}" />
 		</manifest>
 	</jar>
-	<unjar dest="${build.home}/classes">
-		<fileset dir="${basedir}/jars/" includes="jgraphlayout*.jar" />
-	</unjar>
 	<jar jarfile="${build.home}/lib/${app.jar}" basedir="${build.home}/classes">
 		<manifest>
 			<attribute name="Vendor" value="JGraph.com" />
@@ -230,6 +227,8 @@
 
 	<!--  Compress -->
 	<zip destfile="${dist.home}/${dist.name}.zip" basedir="${dist.home}/${ant.project.name}" />
+
 </target>
+
 </project>
 

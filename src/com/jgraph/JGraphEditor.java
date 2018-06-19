@@ -26,7 +26,7 @@ public class JGraphEditor {
 	/**
 	 * Global static product identifier.
 	 */
-	public static final String VERSION = "JGraphEditor (v6.0.4.1)";
+	public static final String VERSION = "JGraphEditor (v6.0.7.4)";
 	
 	/**
 	 * Holds the settings.

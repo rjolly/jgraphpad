@@ -1,5 +1,5 @@
 /* 
- * $Id: JGraphpadFocusManager.java,v 1.4 2006/01/30 15:33:27 gaudenz Exp $
+ * $Id: JGraphpadFocusManager.java,v 1.7 2009/01/21 11:50:03 david Exp $
  * Copyright (c) 2001-2005, Gaudenz Alder
  * 
  * All rights reserved.
@@ -43,7 +43,19 @@ import org.jgraph.event.GraphSelectionListener;
 public class JGraphpadFocusManager extends Observable implements
 		GraphLayoutCacheListener, GraphModelListener, GraphSelectionListener,
 		MouseListener, MouseMotionListener, UndoableEditListener,
-		PropertyChangeListener {
+		PropertyChangeListener
+{
+
+	/**
+	 * Specifies if the focused graph should be references if any other
+	 * component gets the permanent focus. If this is true, then the
+	 * focusedGraph is only ever changed if another graph is focused or
+	 * if the ancestor of the focused graph becomes null, in which case
+	 * the focused graph itself is nullified. If this is false, then the
+	 * focused graph becomes null as soon as any other component gets the
+	 * permanent focus. Default is true.
+	 */
+	public static boolean KEEP_FOCUSED_GRAPH = true;
 
 	/**
 	 * Bound property name for <code>focusedGraph</code>.
@@ -109,22 +121,26 @@ public class JGraphpadFocusManager extends Observable implements
 	/**
 	 * Constructs a new focus manager.
 	 */
-	public JGraphpadFocusManager() {
+	public JGraphpadFocusManager()
+	{
 		KeyboardFocusManager focusManager = KeyboardFocusManager
 				.getCurrentKeyboardFocusManager();
-		focusManager.addPropertyChangeListener(new PropertyChangeListener() {
+		focusManager.addPropertyChangeListener(new PropertyChangeListener()
+		{
 
 			/*
 			 * (non-Javadoc)
 			 */
-			public void propertyChange(PropertyChangeEvent e) {
+			public void propertyChange(PropertyChangeEvent e)
+			{
 				String prop = e.getPropertyName();
 				if (("permanentFocusOwner".equals(prop))
 						&& (e.getNewValue() != null)
-						&& ((e.getNewValue()) instanceof Component)) {
+						&& ((e.getNewValue()) instanceof Component))
+				{
 					if (e.getNewValue() instanceof JGraph)
 						setFocusedGraph((JGraph) e.getNewValue());
-					else
+					else if (!KEEP_FOCUSED_GRAPH)
 						setFocusedGraph(null);
 				}
 			}
@@ -136,7 +152,8 @@ public class JGraphpadFocusManager extends Observable implements
 	 * 
 	 * @return Returns the shared graph focus manager.
 	 */
-	public static JGraphpadFocusManager getCurrentGraphFocusManager() {
+	public static JGraphpadFocusManager getCurrentGraphFocusManager()
+	{
 		return currentGraphFocusManager;
 	}
 
@@ -145,7 +162,8 @@ public class JGraphpadFocusManager extends Observable implements
 	 * 
 	 * @return Returns the focused graph.
 	 */
-	public JGraph getFocusedGraph() {
+	public JGraph getFocusedGraph()
+	{
 		return focusedGraph;
 	}
 
@@ -160,12 +178,15 @@ public class JGraphpadFocusManager extends Observable implements
 	 * @param newGraph
 	 *            The new focused graph.
 	 */
-	public void setFocusedGraph(JGraph newGraph) {
+	public void setFocusedGraph(JGraph newGraph)
+	{
 		JGraph oldValue = getFocusedGraph();
-		if (oldValue != newGraph) {
+		if (oldValue != newGraph)
+		{
 
 			// Uninstalls the listeners from the previous graph
-			if (oldValue != null) {
+			if (oldValue != null)
+			{
 				uninstallListeners(oldValue);
 			}
 
@@ -184,8 +205,10 @@ public class JGraphpadFocusManager extends Observable implements
 	 * @param graph
 	 *            The graph to install the listeners to.
 	 */
-	protected void installListeners(JGraph graph) {
-		if (graph != null) {
+	protected void installListeners(JGraph graph)
+	{
+		if (graph != null)
+		{
 			graph.getModel().addGraphModelListener(this);
 			graph.getModel().addUndoableEditListener(this);
 			graph.addGraphSelectionListener(this);
@@ -203,8 +226,10 @@ public class JGraphpadFocusManager extends Observable implements
 	 * @param graph
 	 *            The graph to uninstall the listeners from.
 	 */
-	protected void uninstallListeners(JGraph graph) {
-		if (graph != null) {
+	protected void uninstallListeners(JGraph graph)
+	{
+		if (graph != null)
+		{
 			graph.getModel().removeGraphModelListener(this);
 			graph.getModel().removeUndoableEditListener(this);
 			graph.removeGraphSelectionListener(this);
@@ -227,7 +252,8 @@ public class JGraphpadFocusManager extends Observable implements
 	 *            the PropertyChangeListener to be added
 	 */
 	public synchronized void addPropertyChangeListener(
-			PropertyChangeListener listener) {
+			PropertyChangeListener listener)
+	{
 		changeSupport.addPropertyChangeListener(listener);
 	}
 
@@ -239,15 +265,25 @@ public class JGraphpadFocusManager extends Observable implements
 	 *            the PropertyChangeListener to be removed
 	 */
 	public synchronized void removePropertyChangeListener(
-			PropertyChangeListener listener) {
+			PropertyChangeListener listener)
+	{
 		changeSupport.removePropertyChangeListener(listener);
 	}
 
 	/**
 	 * Redispatches the property change event using the {@link #changeSupport}.
 	 */
-	public void propertyChange(PropertyChangeEvent evt) {
-		changeSupport.firePropertyChange(evt);
+	public void propertyChange(PropertyChangeEvent evt)
+	{
+		if (focusedGraph != null && evt.getPropertyName() == "ancestor"
+				&& evt.getNewValue() == null)
+		{
+			setFocusedGraph(null);
+		}
+		else
+		{
+			changeSupport.firePropertyChange(evt);
+		}
 	}
 
 	//
@@ -259,7 +295,8 @@ public class JGraphpadFocusManager extends Observable implements
 	 * 
 	 * @see javax.swing.event.UndoableEditListener#undoableEditHappened(javax.swing.event.UndoableEditEvent)
 	 */
-	public void undoableEditHappened(UndoableEditEvent e) {
+	public void undoableEditHappened(UndoableEditEvent e)
+	{
 		changeSupport.firePropertyChange(UNDOABLE_CHANGE_NOTIFICATION,
 				focusedGraph, e);
 	}
@@ -274,7 +311,8 @@ public class JGraphpadFocusManager extends Observable implements
 	 * 
 	 * @see javax.swing.event.UndoableEditListener#undoableEditHappened(javax.swing.event.UndoableEditEvent)
 	 */
-	public void graphLayoutCacheChanged(GraphLayoutCacheEvent e) {
+	public void graphLayoutCacheChanged(GraphLayoutCacheEvent e)
+	{
 		setChanged();
 		fireGraphLayoutCacheChanged(e);
 		changeSupport.firePropertyChange(GRAPHLAYOUT_CHANGE_NOTIFICATION,
@@ -289,7 +327,8 @@ public class JGraphpadFocusManager extends Observable implements
 	 * @param l
 	 *            the listener to add
 	 */
-	public void addGraphLayoutCacheListener(GraphLayoutCacheListener l) {
+	public void addGraphLayoutCacheListener(GraphLayoutCacheListener l)
+	{
 		listenerList.add(GraphLayoutCacheListener.class, l);
 	}
 
@@ -300,7 +339,8 @@ public class JGraphpadFocusManager extends Observable implements
 	 * @param l
 	 *            the listener to remove
 	 */
-	public void removeGraphLayoutCacheListener(GraphLayoutCacheListener l) {
+	public void removeGraphLayoutCacheListener(GraphLayoutCacheListener l)
+	{
 		listenerList.remove(GraphLayoutCacheListener.class, l);
 	}
 
@@ -311,10 +351,13 @@ public class JGraphpadFocusManager extends Observable implements
 	 * 
 	 * @see EventListenerList
 	 */
-	protected void fireGraphLayoutCacheChanged(GraphLayoutCacheEvent e) {
+	protected void fireGraphLayoutCacheChanged(GraphLayoutCacheEvent e)
+	{
 		Object[] listeners = listenerList.getListenerList();
-		for (int i = listeners.length - 2; i >= 0; i -= 2) {
-			if (listeners[i] == GraphLayoutCacheListener.class) {
+		for (int i = listeners.length - 2; i >= 0; i -= 2)
+		{
+			if (listeners[i] == GraphLayoutCacheListener.class)
+			{
 				((GraphLayoutCacheListener) listeners[i + 1])
 						.graphLayoutCacheChanged(e);
 			}
@@ -325,7 +368,8 @@ public class JGraphpadFocusManager extends Observable implements
 	 * Returns an array of all GraphModelListeners that were added to this
 	 * model.
 	 */
-	public GraphLayoutCacheListener[] getGraphLayoutCacheListeners() {
+	public GraphLayoutCacheListener[] getGraphLayoutCacheListeners()
+	{
 		return (GraphLayoutCacheListener[]) listenerList
 				.getListeners(GraphLayoutCacheListener.class);
 	}
@@ -340,7 +384,8 @@ public class JGraphpadFocusManager extends Observable implements
 	 * 
 	 * @see org.jgraph.event.GraphModelListener#graphChanged(org.jgraph.event.GraphModelEvent)
 	 */
-	public void graphChanged(GraphModelEvent e) {
+	public void graphChanged(GraphModelEvent e)
+	{
 		fireGraphChanged(e);
 		changeSupport.firePropertyChange(MODEL_CHANGE_NOTIFICATION,
 				focusedGraph, e);
@@ -353,7 +398,8 @@ public class JGraphpadFocusManager extends Observable implements
 	 * @param l
 	 *            the listener to add
 	 */
-	public void addGraphModelListener(GraphModelListener l) {
+	public void addGraphModelListener(GraphModelListener l)
+	{
 		listenerList.add(GraphModelListener.class, l);
 	}
 
@@ -364,7 +410,8 @@ public class JGraphpadFocusManager extends Observable implements
 	 * @param l
 	 *            the listener to remove
 	 */
-	public void removeGraphModelListener(GraphModelListener l) {
+	public void removeGraphModelListener(GraphModelListener l)
+	{
 		listenerList.remove(GraphModelListener.class, l);
 	}
 
@@ -375,7 +422,8 @@ public class JGraphpadFocusManager extends Observable implements
 	 * 
 	 * @see EventListenerList
 	 */
-	protected void fireGraphChanged(GraphModelEvent e) {
+	protected void fireGraphChanged(GraphModelEvent e)
+	{
 		Object[] listeners = listenerList.getListenerList();
 		for (int i = listeners.length - 2; i >= 0; i -= 2)
 			if (listeners[i] == GraphModelListener.class)
@@ -385,7 +433,8 @@ public class JGraphpadFocusManager extends Observable implements
 	/**
 	 * Return an array of all graph model listeners.
 	 */
-	public GraphModelListener[] getGraphModelListeners() {
+	public GraphModelListener[] getGraphModelListeners()
+	{
 		return (GraphModelListener[]) listenerList
 				.getListeners(GraphModelListener.class);
 	}
@@ -400,7 +449,8 @@ public class JGraphpadFocusManager extends Observable implements
 	 * 
 	 * @see org.jgraph.event.GraphSelectionListener#valueChanged(org.jgraph.event.GraphSelectionEvent)
 	 */
-	public void valueChanged(GraphSelectionEvent e) {
+	public void valueChanged(GraphSelectionEvent e)
+	{
 		fireValueChanged(e);
 		changeSupport.firePropertyChange(SELECTION_CHANGE_NOTIFICATION,
 				focusedGraph, e);
@@ -413,7 +463,8 @@ public class JGraphpadFocusManager extends Observable implements
 	 * @param x
 	 *            the new listener to be added
 	 */
-	public void addGraphSelectionListener(GraphSelectionListener x) {
+	public void addGraphSelectionListener(GraphSelectionListener x)
+	{
 		listenerList.add(GraphSelectionListener.class, x);
 	}
 
@@ -424,7 +475,8 @@ public class JGraphpadFocusManager extends Observable implements
 	 * @param x
 	 *            the listener to remove
 	 */
-	public void removeGraphSelectionListener(GraphSelectionListener x) {
+	public void removeGraphSelectionListener(GraphSelectionListener x)
+	{
 		listenerList.remove(GraphSelectionListener.class, x);
 	}
 
@@ -435,7 +487,8 @@ public class JGraphpadFocusManager extends Observable implements
 	 * @see #addGraphSelectionListener(GraphSelectionListener)
 	 * @see EventListenerList
 	 */
-	protected void fireValueChanged(GraphSelectionEvent e) {
+	protected void fireValueChanged(GraphSelectionEvent e)
+	{
 		Object[] listeners = listenerList.getListenerList();
 		for (int i = listeners.length - 2; i >= 0; i -= 2)
 			if (listeners[i] == GraphSelectionListener.class)
@@ -449,7 +502,8 @@ public class JGraphpadFocusManager extends Observable implements
 	 * @return all of the objects receiving <em>listenerType</em>
 	 *         notifications from this model
 	 */
-	public EventListener[] getListeners(Class listenerType) {
+	public EventListener[] getListeners(Class listenerType)
+	{
 		return listenerList.getListeners(listenerType);
 	}
 
@@ -464,7 +518,8 @@ public class JGraphpadFocusManager extends Observable implements
 	 * @param l
 	 *            the listener to add
 	 */
-	public synchronized void addMouseListener(MouseListener l) {
+	public synchronized void addMouseListener(MouseListener l)
+	{
 		mouseListener = AWTEventMulticaster.add(mouseListener, l);
 	}
 
@@ -475,7 +530,8 @@ public class JGraphpadFocusManager extends Observable implements
 	 * @param l
 	 *            the listener to remove
 	 */
-	public synchronized void removeMouseListener(MouseListener l) {
+	public synchronized void removeMouseListener(MouseListener l)
+	{
 		mouseListener = AWTEventMulticaster.remove(mouseListener, l);
 	}
 
@@ -486,7 +542,8 @@ public class JGraphpadFocusManager extends Observable implements
 	 * @param l
 	 *            the listener to add
 	 */
-	public synchronized void addMouseMotionListener(MouseMotionListener l) {
+	public synchronized void addMouseMotionListener(MouseMotionListener l)
+	{
 		mouseMotionListener = AWTEventMulticaster.add(mouseMotionListener, l);
 	}
 
@@ -498,7 +555,8 @@ public class JGraphpadFocusManager extends Observable implements
 	 * @param l
 	 *            the listener to remove
 	 */
-	public synchronized void removeMouseMotionListener(MouseMotionListener l) {
+	public synchronized void removeMouseMotionListener(MouseMotionListener l)
+	{
 		mouseMotionListener = AWTEventMulticaster
 				.remove(mouseMotionListener, l);
 	}
@@ -508,9 +566,11 @@ public class JGraphpadFocusManager extends Observable implements
 	 * 
 	 * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
 	 */
-	public void mouseClicked(MouseEvent arg0) {
+	public void mouseClicked(MouseEvent arg0)
+	{
 		MouseListener listener = mouseListener;
-		if (listener != null) {
+		if (listener != null)
+		{
 			listener.mouseClicked(arg0);
 		}
 	}
@@ -520,9 +580,11 @@ public class JGraphpadFocusManager extends Observable implements
 	 * 
 	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
 	 */
-	public void mousePressed(MouseEvent arg0) {
+	public void mousePressed(MouseEvent arg0)
+	{
 		MouseListener listener = mouseListener;
-		if (listener != null) {
+		if (listener != null)
+		{
 			listener.mousePressed(arg0);
 		}
 	}
@@ -532,9 +594,11 @@ public class JGraphpadFocusManager extends Observable implements
 	 * 
 	 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
 	 */
-	public void mouseReleased(MouseEvent arg0) {
+	public void mouseReleased(MouseEvent arg0)
+	{
 		MouseListener listener = mouseListener;
-		if (listener != null) {
+		if (listener != null)
+		{
 			listener.mouseReleased(arg0);
 		}
 	}
@@ -544,9 +608,11 @@ public class JGraphpadFocusManager extends Observable implements
 	 * 
 	 * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
 	 */
-	public void mouseEntered(MouseEvent arg0) {
+	public void mouseEntered(MouseEvent arg0)
+	{
 		MouseListener listener = mouseListener;
-		if (listener != null) {
+		if (listener != null)
+		{
 			listener.mouseEntered(arg0);
 		}
 	}
@@ -556,9 +622,11 @@ public class JGraphpadFocusManager extends Observable implements
 	 * 
 	 * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
 	 */
-	public void mouseExited(MouseEvent arg0) {
+	public void mouseExited(MouseEvent arg0)
+	{
 		MouseListener listener = mouseListener;
-		if (listener != null) {
+		if (listener != null)
+		{
 			listener.mouseExited(arg0);
 		}
 	}
@@ -568,9 +636,11 @@ public class JGraphpadFocusManager extends Observable implements
 	 * 
 	 * @see java.awt.event.MouseMotionListener#mouseDragged(java.awt.event.MouseEvent)
 	 */
-	public void mouseDragged(MouseEvent arg0) {
+	public void mouseDragged(MouseEvent arg0)
+	{
 		MouseMotionListener listener = mouseMotionListener;
-		if (listener != null) {
+		if (listener != null)
+		{
 			listener.mouseDragged(arg0);
 		}
 	}
@@ -580,9 +650,11 @@ public class JGraphpadFocusManager extends Observable implements
 	 * 
 	 * @see java.awt.event.MouseMotionListener#mouseMoved(java.awt.event.MouseEvent)
 	 */
-	public void mouseMoved(MouseEvent arg0) {
+	public void mouseMoved(MouseEvent arg0)
+	{
 		MouseMotionListener listener = mouseMotionListener;
-		if (listener != null) {
+		if (listener != null)
+		{
 			listener.mouseMoved(arg0);
 		}
 	}

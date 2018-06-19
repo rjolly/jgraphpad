@@ -1,5 +1,5 @@
 /*
- * $Id: JGraphpadEdgeRenderer.java,v 1.5 2006/03/21 10:18:19 gaudenz Exp $
+ * $Id: JGraphpadEdgeRenderer.java,v 1.7 2010/03/31 21:06:43 david Exp $
  * Copyright (c) 2001-2005, Gaudenz Alder
  * 
  * All rights reserved. 
@@ -33,6 +33,7 @@ import org.jgraph.graph.CellView;
 import org.jgraph.graph.EdgeRenderer;
 import org.jgraph.graph.EdgeView;
 import org.jgraph.graph.GraphConstants;
+import org.jgraph.graph.GraphModel;
 
 public class JGraphpadEdgeRenderer extends EdgeRenderer {
 
@@ -275,8 +276,12 @@ public class JGraphpadEdgeRenderer extends EdgeRenderer {
 		JGraph graph = (JGraph) this.graph.get();
 
 		// Configures the rich text or component value
-		userObject = graph.getModel().getValue(view.getCell());
-		if (userObject instanceof JGraphpadBusinessObject) {
+		Object cell = view.getCell();
+		userObject = null;
+		if (cell != null && graph != null && graph.getModel() != null) {
+			userObject = graph.getModel().getValue(cell);
+		}
+		if (userObject != null && userObject instanceof JGraphpadBusinessObject) {
 			JGraphpadBusinessObject obj = (JGraphpadBusinessObject) userObject;
 			isRichText = obj.isRichText();
 		} else {
@@ -284,7 +289,7 @@ public class JGraphpadEdgeRenderer extends EdgeRenderer {
 		}
 		verticalAlignment = getVerticalAlignment(view.getAllAttributes());
 		// Configures the rich text box for rendering the rich text
-		if (isRichText) {
+		if (userObject != null && isRichText) {
 			StyledDocument document = (StyledDocument) textPane.getDocument();
 			((JGraphpadRichTextValue) ((JGraphpadBusinessObject) userObject)
 					.getValue()).insertInto(document);

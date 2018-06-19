@@ -1,5 +1,5 @@
 /* 
- * $Id: JGraphpadFileAction.java,v 1.16 2007/08/29 09:30:49 gaudenz Exp $
+ * $Id: JGraphpadFileAction.java,v 1.19 2008/05/22 08:45:20 david Exp $
  * Copyright (c) 2001-2005, Gaudenz Alder
  * 
  * All rights reserved.
@@ -289,10 +289,13 @@ public class JGraphpadFileAction extends JGraphEditorAction {
 					doCloseFile(file, true);
 			}
 			
-			if (getName().equals(NAME_OPEN))
+			if (getName().equals(NAME_OPEN)) {
 				doOpenFile(dlgs.editorFileDialog(getActiveFrame(),
 						getString("OpenJGraphpadFile"), null, true,
 						lastDirectory), file);
+			} else if (getName().equals(NAME_DOWNLOAD)) {
+				doOpenFile(dlgs.valueDialog(getString("EnterURL")), file);
+			}
 
 			// Actions that require a focused diagram
 			JGraphEditorDiagram diagram = getPermanentFocusOwnerDiagram();
@@ -573,6 +576,7 @@ public class JGraphpadFileAction extends JGraphEditorAction {
 	 */
 	protected void doOpenFile(String filename, JGraphEditorFile file) throws MalformedURLException,
 			IOException {
+//		JGraphEditorAction.getActiveFrame().setFocus();
 		if (filename != null) {
 			JGraphEditorModel model = editor.getModel();
 			if (model.getFileByFilename(filename) == null) {
@@ -1044,7 +1048,7 @@ public class JGraphpadFileAction extends JGraphEditorAction {
 	 */
 	public static boolean postPlain(URL url, String path, OutputStream data)
 			throws IOException {
-		return post(url, path, data.toString(), MIME_PLAINTEXT);
+		return post(url, path, MIME_PLAINTEXT, data.toString());
 	}
 
 	/**
@@ -1262,7 +1266,7 @@ public class JGraphpadFileAction extends JGraphEditorAction {
 			actionRemoveDiagram.setEnabled(isDiagramFocused);
 			actionRenameDiagram.setEnabled(isDiagramFocused);
 			actionNewDiagram.setEnabled(isDiagramFocused);
-			actionNewLibrary.setEnabled(!JGraphpad.INNER_LIBRARIES || (file != null));
+			actionNewLibrary.setEnabled(isDiagramFocused || !JGraphpad.INNER_LIBRARIES);
 			actionImportCSV.setEnabled(isDiagramFocused);
 			actionSaveImage.setEnabled(isDiagramFocused);
 			actionClose.setEnabled(file != null);

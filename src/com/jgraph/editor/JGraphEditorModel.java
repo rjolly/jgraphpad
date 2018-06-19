@@ -1,5 +1,5 @@
 /* 
- * $Id: JGraphEditorModel.java,v 1.8 2007/08/29 09:30:49 gaudenz Exp $
+ * $Id: JGraphEditorModel.java,v 1.9 2007/11/04 09:18:53 david Exp $
  * Copyright (c) 2001-2005, Gaudenz Alder
  * 
  * All rights reserved.
@@ -252,13 +252,17 @@ public class JGraphEditorModel extends DefaultTreeModel {
 	 *            The URI to read the object from.
 	 * @return Returns the object stat was added.
 	 */
-	public Object readFile(String uri) throws MalformedURLException, IOException {
+	public Object readFile(String uri) throws MalformedURLException,
+			IOException {
 		if (uri != null) {
 			Object file = getFileByFilename(uri);
 			if (file == null) {
 				InputStream in = getInputStream(uri);
 				file = readObject(in);
 				in.close();
+				if (file instanceof JGraphEditorFile) {
+					((JGraphEditorFile) file).setFilename(uri);
+				}
 				return file;
 			}
 		}
@@ -276,14 +280,13 @@ public class JGraphEditorModel extends DefaultTreeModel {
 		if (uri != null) {
 			Object file = readFile(uri);
 			if (file instanceof JGraphEditorFile) {
-				((JGraphEditorFile) file).setFilename(uri);
 				addRoot((JGraphEditorFile) file);
 			}
 			return file;
 		}
 		return null;
 	}
-
+	
 	/**
 	 * Hook for subclassers to install the required listeners in new tree nodes.
 	 * This is invoked recursively for tree nodes and calls
