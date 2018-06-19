@@ -22,6 +22,10 @@
             <exclude org="bouncycastle" module="bcprov-jdk14" name="*" type="*" ext="*" conf="" matcher="exact"/>
             <exclude org="bouncycastle" module="bctsp-jdk14" name="*" type="*" ext="*" conf="" matcher="exact"/>
         </dependency>
+        <dependency org="jgraph" name="jgraph" rev="5.13.0.0" conf="compile->master;runtime->default"/>
         <dependency org="org.beanshell" name="bsh" rev="2.0b5" conf="compile->master;runtime->default"/>
+        <dependency org="com.github.rjolly" name="l2fprod-common-sheet" rev="6.9.1" conf="compile->master;runtime->default"/>
+        <dependency org="com.l2fprod.common" name="l2fprod-common-fontchooser" rev="6.9.1" conf="compile->master;runtime->default"/>
+        <dependency org="com.l2fprod.common" name="l2fprod-common-outlookbar" rev="6.9.1" conf="compile->master;runtime->default"/>
     </dependencies>
 </ivy-module>
