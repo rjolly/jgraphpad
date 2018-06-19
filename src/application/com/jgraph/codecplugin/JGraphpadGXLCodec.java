@@ -415,8 +415,7 @@ public class JGraphpadGXLCodec {
 						level1);
 				for (int i = 0; i < tmpProperties.length; i++) {
 					prop = tmpProperties[i];
-					encoded += encodeString(prop.getReadMethod().invoke(bean,
-							null).toString(), prop.getDisplayName(), level1);
+					encoded += encodeString(prop.getReadMethod().invoke(bean).toString(), prop.getDisplayName(), level1);
 				}
 				encoded = encodeAttribute(encoded, attributeName, level);
 			} catch (Exception e) {
