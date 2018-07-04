@@ -27,5 +27,6 @@
         <dependency org="com.github.rjolly" name="l2fprod-common-sheet" rev="6.9.1" conf="compile->master;runtime->default"/>
         <dependency org="com.l2fprod.common" name="l2fprod-common-fontchooser" rev="6.9.1" conf="compile->master;runtime->default"/>
         <dependency org="com.l2fprod.common" name="l2fprod-common-outlookbar" rev="6.9.1" conf="compile->master;runtime->default"/>
+        <dependency org="com.github.rjolly" name="epsgraphics" rev="1.0" conf="compile->master;runtime->default"/>
     </dependencies>
 </ivy-module>
